@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>15天意法西低强度路线｜景点酒店餐饮地图指南</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://tile.openstreetmap.org">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="回到顶部">
+      <span class="brand-mark">EU</span>
+      <span>
+        <strong>15天意法西低强度路线</strong>
+        <small>意大利 · 法国 · 西班牙</small>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="页面导航">
+      <a href="#map">地图</a>
+      <a href="#hotels">酒店</a>
+      <a href="#destinations">玩法</a>
+      <a href="#candidates">候选</a>
+      <a href="#days">逐日</a>
+      <a href="#city-transfer">交通</a>
+      <a href="#food">餐饮</a>
+      <a href="#reservations">预约</a>
+      <a href="#notes">注意</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">去除土耳其 · 无自驾 · 巴黎完整日</p>
+        <h1>西安出发直入罗马，增加佛罗伦萨和巴塞罗那，南法只留尼斯精选，最后巴黎完整一天。</h1>
+        <p class="lead">新版以低强度为优先：不自驾、减少短途飞机、拖箱日用出租接驳；地图细化到酒店、景点、餐饮点之间，每段都能打开 Google Maps。</p>
+        <div class="hero-stats" aria-label="路线摘要">
+          <span><strong>15</strong> 天</span>
+          <span><strong>5</strong> 个住宿点</span>
+          <span><strong id="segmentCount">70</strong> 段路线</span>
+          <span><strong id="modeCount">6</strong> 种交通颜色</span>
+        </div>
+      </div>
+      <div class="hero-images">
+        <img src="./assets/images/rome-colosseum.webp" alt="意大利罗马斗兽场">
+        <img src="./assets/images/nice-eze.jpg" alt="南法埃兹">
+        <img src="./assets/images/barcelona-park-guell.jpg" alt="巴塞罗那古埃尔公园">
+      </div>
+    </section>
+
+    <section id="map" class="map-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">真实地图 + 细路线</p>
+          <h2>按天查看景点到景点的路线</h2>
+        </div>
+        <p>地图线段表达每天酒店、景点和餐饮点之间的顺序；精确步行/公共交通路径请点击每段的 Google Maps 路线。</p>
+      </div>
+      <div class="map-workspace">
+        <aside class="map-controls">
+          <h3>筛选路线</h3>
+          <div id="dayFilters" class="day-filters"></div>
+          <h3>颜色图例</h3>
+          <div id="modeLegend" class="mode-legend"></div>
+        </aside>
+        <div id="routeMap" class="route-map" aria-label="15天详细路线地图"></div>
+      </div>
+    </section>
+
+    <section id="hotels" class="hotel-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">酒店定位</p>
+          <h2>每站建议住在哪个区域</h2>
+        </div>
+        <p>每个酒店区都能直接打开 Google Maps，方便按预算继续筛酒店。</p>
+      </div>
+      <div id="hotelGuide" class="hotel-grid"></div>
+    </section>
+
+    <section id="destinations" class="destination-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">怎么玩</p>
+          <h2>每个城市最值得玩的内容</h2>
+        </div>
+        <p>按城市解释为什么值得停留、主打体验和适合的节奏；南法从深度版压缩为尼斯精选。</p>
+      </div>
+      <div id="destinationCards" class="destination-grid"></div>
+    </section>
+
+    <section id="candidates" class="candidate-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">候选景点池</p>
+          <h2>每个城市可替换/加选的景点</h2>
+        </div>
+        <p>这些不默认塞进每日路线，避免行程过重；星级是本路线优先级，按体力、天气、预约情况从同城候选里替换。</p>
+      </div>
+      <div id="candidateGuide" class="candidate-grid"></div>
+    </section>
+
+    <section id="days" class="days-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">逐日路线</p>
+          <h2>每天从哪里到哪里</h2>
+        </div>
+        <p>每张卡片按当天顺序列出酒店、景点、餐饮和交通方式；景点后的星级代表本路线推荐优先级。</p>
+      </div>
+      <div id="dayCards" class="day-cards"></div>
+    </section>
+
+    <section id="city-transfer" class="guide-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">交通指南</p>
+          <h2>跨城与市内怎么走</h2>
+        </div>
+        <p>跨城优先选择高铁/火车，尼斯到巴塞罗那保留一次短飞；市内按强度选择步行、地铁或出租。</p>
+      </div>
+      <div id="transferGuide" class="guide-grid"></div>
+      <div id="cityTransportGuide" class="guide-grid transport-grid"></div>
+    </section>
+
+    <section id="food" class="food-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">顺路餐饮</p>
+          <h2>具体餐厅跟着当天路线走</h2>
+        </div>
+        <p>不单独绕路追餐厅，早餐靠酒店、午餐夹在景点之间、晚餐靠当天终点或酒店区；热门店出发前再查营业和预约。</p>
+      </div>
+      <div id="foodGuide" class="food-grid"></div>
+    </section>
+
+    <section id="reservations" class="guide-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">预约指南</p>
+          <h2>需要提前订的景点</h2>
+        </div>
+        <p>优先锁定限时入场、排队成本高、或当天票不稳定的景点。</p>
+      </div>
+      <div id="reservationGuide" class="reservation-grid"></div>
+    </section>
+
+    <section id="notes" class="notes-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">注意事项</p>
+          <h2>出行前和路上的关键提醒</h2>
+        </div>
+      </div>
+      <div id="noticeGrid" class="notice-grid"></div>
+    </section>
+
+    <section class="gallery-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">本地图像</p>
+          <h2>图片资源已放入本地文件夹</h2>
+        </div>
+      </div>
+      <div class="gallery">
+        <figure><img src="./assets/images/rome-colosseum.webp" alt="罗马"><figcaption>罗马</figcaption></figure>
+        <figure><img src="./assets/images/rome-colosseum.webp" alt="佛罗伦萨与托斯卡纳"><figcaption>佛罗伦萨 / 托斯卡纳</figcaption></figure>
+        <figure><img src="./assets/images/nice-eze.jpg" alt="南法尼斯与埃兹"><figcaption>尼斯 / 埃兹</figcaption></figure>
+        <figure><img src="./assets/images/barcelona-park-guell.jpg" alt="巴塞罗那"><figcaption>巴塞罗那</figcaption></figure>
+        <figure><img src="./assets/images/paris-eiffel.jpg" alt="巴黎"><figcaption>巴黎</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="sources-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">资料入口</p>
+          <h2>官方购票与参考链接</h2>
+        </div>
+      </div>
+      <div class="source-grid">
+        <a href="https://www.italia.it/en/lazio/rome" target="_blank" rel="noopener">Italia.it · Rome</a>
+        <a href="https://www.italia.it/en/tuscany/florence" target="_blank" rel="noopener">Italia.it · Florence</a>
+        <a href="https://www.france.fr/en/destination/cote-dazur/" target="_blank" rel="noopener">France.fr · Côte d’Azur</a>
+        <a href="https://www.spain.info/en/destination/barcelona/" target="_blank" rel="noopener">Spain.info · Barcelona</a>
+        <a href="https://www.france.fr/en/destination/paris/" target="_blank" rel="noopener">France.fr · Paris</a>
+        <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
